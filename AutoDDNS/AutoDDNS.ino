@@ -12,6 +12,13 @@
 
 WiFiServer server(80);
 
+void start_deepsleep() {
+    esp_sleep_enable_timer_wakeup(update_interval_s * 1000000);
+    Serial.println("Going to sleep");
+    esp_deep_sleep_start();
+
+}
+
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
@@ -37,7 +44,7 @@ void setup() {
     - "freemyip"
     - "afraid.org"
   */
-  EasyDDNS.service("dynu");
+  EasyDDNS.service(ddns_provider);
 
   /*
     For DDNS Providers where you get a token:
@@ -55,9 +62,22 @@ void setup() {
   });
 
   EasyDDNS.update(0);
+
+  if (use_deepsleep) {
+    start_deepsleep();
+  }
 }
 
 void loop() {
+  if (!use_deepsleep) {
+    sleep(update_interval_s * 1000);
+  }
+  
+  Serial.println("Checking IP...");
   // Check for new public IP every 300 seconds == 5 minutes
-  EasyDDNS.update(300000);
+  EasyDDNS.update(update_interval_s * 1000);
+
+  if (use_deepsleep) {
+    start_deepsleep();
+  }
 }

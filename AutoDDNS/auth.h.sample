@@ -8,4 +8,13 @@ const char * ddns_host = "dyndns-host.dyndns.com";
 const char * ddns_user = "TheUser";
 const char * ddns_password = "APassword";
 
+// the DDNS provider. See EasyDDNS for available options
+const char * ddns_provider = "dynu";
+
+// Update interval in seconds
+const int update_interval_s = 300;
+
+// if true, use deepsleep. Otherwise, use normal sleep
+const bool use_deepsleep = true;
+
 #endif
