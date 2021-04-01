@@ -1,0 +1,11 @@
+#ifndef AUTH_H
+#define AUTH_H
+
+const char * ssid = "TheSSID";
+const char * password = "ThePasswordForSSID";
+
+const char * ddns_host = "dyndns-host.dyndns.com";
+const char * ddns_user = "TheUser";
+const char * ddns_password = "APassword";
+
+#endif
