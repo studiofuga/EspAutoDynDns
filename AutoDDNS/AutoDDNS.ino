@@ -13,9 +13,16 @@
 WiFiServer server(80);
 
 void start_deepsleep() {
-    esp_sleep_enable_timer_wakeup(update_interval_s * 1000000);
     Serial.println("Going to sleep");
+#if defined(ESP8266)
+    ESP.deepSleep(update_interval_s * 1000000); 
+#elif defined(ESP32)
+    esp_sleep_enable_timer_wakeup(update_interval_s * 1000000);
     esp_deep_sleep_start();
+#else
+    Serial.println("No Deep Sleep in this cpu.");
+    delay(update_interval_s * 1000);
+#endif
 
 }
 
@@ -70,7 +77,7 @@ void setup() {
 
 void loop() {
   if (!use_deepsleep) {
-    sleep(update_interval_s * 1000);
+    delay(update_interval_s * 1000);
   }
   
   Serial.println("Checking IP...");
